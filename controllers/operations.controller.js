@@ -1,5 +1,8 @@
 const { validationResult } = require("express-validator"); //  modelo de express validator de las respuetas
-
+const suma = require("./sum");
+const resta = require("./res");
+const multiplicacion = require("./mul");
+const division = require("./div");
 // como se trabaja con express esta funcion tiene que recibir tres parametros Request, res La respuesta, Next validación adicional
 exports.sum = (req, res, next) => {
     // validación de que la fima sea correcta
@@ -14,11 +17,8 @@ exports.sum = (req, res, next) => {
 
     try {
         // obtenemos los valores el simbolo + es para convertir de string a entero
-        const valueOne = +req.body.valueOne;
-        const valueTwo = +req.body.valueTwo;
-        const result = valueOne + valueTwo;
-
-        res.status(201).json({ message: "sum succes.", data: { result } });
+        const sum = new suma(+req.body.valueOne,+req.body.valueTwo);
+        res.status(201).json({ message: "sum succes.", data: sum.getSum() });
 
     } catch (err) {
         const error = new Error('Validation failed');
@@ -43,10 +43,8 @@ exports.res = (req, res, next) => {
 
     try {
         // obtenemos los valores el simbolo + es para convertir de string a entero
-        const valueOne = +req.body.valueOne;
-        const valueTwo = +req.body.valueTwo;
-        const result = valueOne - valueTwo;
-        res.status(201).json({ message: "res succes.", data: { result } });
+        const rest = new resta(+req.body.valueOne,+req.body.valueTwo);
+        res.status(201).json({ message: "res succes.", data: rest.getRes() });
 
     } catch (err) {
         const error = new Error('Validation failed');
@@ -71,10 +69,8 @@ exports.mul = (req, res, next) => {
 
     try {
         // obtenemos los valores el simbolo + es para convertir de string a entero
-        const valueOne = +req.body.valueOne;
-        const valueTwo = +req.body.valueTwo;
-        const result = valueOne * valueTwo;
-        res.status(201).json({ message: "res succes.", data: { result } });
+        const mul = new multiplicacion(+req.body.valueOne,+req.body.valueTwo);
+        res.status(201).json({ message: "mul succes.", data: mul.getMul() });
 
     } catch (err) {
         const error = new Error('Validation failed');
@@ -98,11 +94,9 @@ exports.div = (req, res, next) => {
 
     try {
         // obtenemos los valores el simbolo + es para convertir de string a entero
-        const valueOne = +req.body.valueOne;
-        const valueTwo = +req.body.valueTwo;
-        if (valueTwo != 0) {
-            const result = valueOne / valueTwo;
-            res.status(201).json({ message: "res succes.", data: { result } });
+        if (+req.body.valueTwo != 0) {
+            const div = new division(+req.body.valueOne,+req.body.valueTwo);
+            res.status(201).json({ message: "mul succes.", data: div.getDiv() });
         }
         else
             res.status(201).json({ message: "division by zero exception", data: {} });
